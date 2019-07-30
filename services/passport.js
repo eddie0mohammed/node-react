@@ -10,7 +10,9 @@ const User = mongoose.model('users');  //  pull users model out of mongoose: 1 a
 const Google_Strategy = new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
+    proxy: true,
     callbackURL: '/auth/google/callback'     //users redirect to this link after granting permisson using oauth,
+    
 }, (accessToken, refreshToken, profile, done) => {
     
     User.findOne({googleId: profile.id})
