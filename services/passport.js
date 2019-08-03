@@ -13,10 +13,9 @@ const Google_Strategy = new GoogleStrategy({
     proxy: true,
     callbackURL: '/auth/google/callback'     //users redirect to this link after granting permisson using oauth,
     
-}, (accessToken, refreshToken, profile, done) => {
+}, async (accessToken, refreshToken, profile, done) => {
     
-    User.findOne({googleId: profile.id})
-        .then((newUser) => {
+    const newUser = await User.findOne({googleId: profile.id});
             
             if (newUser){
                 //existing user
@@ -24,11 +23,10 @@ const Google_Strategy = new GoogleStrategy({
                 done(null, newUser);
             }else{
                 // user doesn't exist
-                User.create({ googleId: profile.id})
-                    .then(user => done(null, user))
+                const user = await User.create({ googleId: profile.id})
+                    done(null, user)
                    
             }
-        })
     
 });
 
